@@ -63,12 +63,15 @@ export default function LoginPage() {
       <Card sx={{ maxWidth: 400, padding: 3 }}>
         <CardContent>
           <Box textAlign="center" mb={2}>
-            <Image
+{/*             <Image
               src="/thegroundlogo.png"
               alt="Logo"
               width={200}
               height={100}
-            />
+            /> */}
+            <Typography variant="h4" gutterBottom>
+              vacation-manager
+            </Typography>
             <Typography variant="h5" gutterBottom>
               Login to your account
             </Typography>
@@ -131,11 +134,11 @@ export default function LoginPage() {
               {error}
             </Typography>
           )}
-          <Typography variant="body2" sx={{ mt: 2, textAlign: "center" }}>
+          {/* <Typography variant="body2" sx={{ mt: 2, textAlign: "center" }}>
             Use the following credentials for demo:<br/>
             Email: <b>am1@am.am</b><br/>
             Password: <b>testtest</b>
-          </Typography>
+          </Typography> */}
         </CardContent>
       </Card>
     </Box>

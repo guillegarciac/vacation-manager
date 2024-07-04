@@ -1,8 +1,22 @@
+'use client';
 import Image from "next/image";
 import styles from "./page.module.css";
 import { Button, Card, CardContent, Typography, Grid } from '@mui/material';
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 
 export default function Home() {
+  const router = useRouter();
+  const { status } = useSession();
+  
+  useEffect(() => {
+    if (status != "authenticated") {
+      router.push("/login");
+    }
+  }, [status, router])
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>

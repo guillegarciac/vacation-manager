@@ -7,6 +7,7 @@ declare module "next-auth" {
   interface User {
     account?: string;
     user?: string;
+    roles?: string[];
   }
 
   interface Session {
@@ -55,18 +56,15 @@ const handler = NextAuth({
             return null;
           }
 
-          // Check if user.role and user.accountId exist before converting to string
-          const role = user.role ? user.role.toString() : null;
-          const accountId = user.accountId ? user.accountId.toString() : null;
-
           // Return user details
           return {
             id: user._id.toString(),
             email: user.email,
-            role: role,
-            accountId: accountId,
-            user: user._id.toString(),
+            account: user.account.toString(),
+            user: user.username,
+            roles: user.roles,
           };
+
         } finally {
           await client.close();
         }
@@ -78,6 +76,7 @@ const handler = NextAuth({
       if (user) {
         token.account = user.account;
         token.user = user.user;
+        token.roles = user.roles;
       }
       console.log("JWT token details:", token);
       return token;
@@ -86,6 +85,7 @@ const handler = NextAuth({
       session.user = session.user || {};
       session.user.account = token.account as string;
       session.user.user = token.user as string;
+      session.user.roles = token.roles as string[];
       return session;
     },
   },
