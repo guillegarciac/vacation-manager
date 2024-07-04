@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
-interface ISprint extends Document {
+export interface ISprint extends Document {
   title: string;
   startDate: Date;
   endDate: Date;
@@ -17,9 +17,6 @@ const SprintSchema: Schema = new mongoose.Schema({
   account: { type: mongoose.Schema.Types.ObjectId, ref: 'Account', required: true },
   status: { type: String, enum: ['planning', 'active', 'completed'], default: 'planning' }
 }, { timestamps: true });
-
-// Ensuring sprints are unique across all squads in an account
-SprintSchema.index({ title: 1, account: 1 }, { unique: true });
 
 const Sprint: Model<ISprint> = mongoose.models.Sprint || mongoose.model<ISprint>('Sprint', SprintSchema);
 
