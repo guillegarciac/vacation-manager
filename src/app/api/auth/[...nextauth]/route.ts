@@ -5,9 +5,8 @@ import { MongoClient, ObjectId } from "mongodb";
 
 declare module "next-auth" {
   interface User {
-    role: string;
-    accountId?: string;
-    userId?: string;
+    account?: string;
+    user?: string;
   }
 
   interface Session {
@@ -30,8 +29,8 @@ const handler = NextAuth({
         password: {},
       },
       async authorize(credentials, req) {
-        if (!process.env.MONGO_URL) {
-          throw new Error("MONGO_URL is not defined");
+        if (!process.env.MONGODB_URI) {
+          throw new Error("MONGODB_URI is not defined");
         }
 
         const client = new MongoClient(process.env.MONGODB_URI as string);
@@ -40,7 +39,6 @@ const handler = NextAuth({
         try {
           const db = client.db();
           const usersCollection = db.collection("users");
-          const rolesCollection = db.collection("roles");
 
           const user = await usersCollection.findOne({
             email: credentials?.email,
@@ -57,24 +55,17 @@ const handler = NextAuth({
             return null;
           }
 
-          // Fetch the role document using the ObjectId
-          const role = await rolesCollection.findOne({
-            _id: new ObjectId(user.role),
-          });
-          if (!role) {
-            throw new Error("Role not found");
-          }
-
-          // Extract permissions, role level, and userId from the role document
-          const userId = user._id.toString();
+          // Check if user.role and user.accountId exist before converting to string
+          const role = user.role ? user.role.toString() : null;
+          const accountId = user.accountId ? user.accountId.toString() : null;
 
           // Return user details
           return {
-            id: userId,
+            id: user._id.toString(),
             email: user.email,
-            role: user.role.toString(),
-            accountId: user.accountId.toString(),
-            userId,
+            role: role,
+            accountId: accountId,
+            user: user._id.toString(),
           };
         } finally {
           await client.close();
@@ -85,18 +76,16 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role;
-        token.accountId = user.accountId;
-        token.userId = user.userId;
+        token.account = user.account;
+        token.user = user.user;
       }
       console.log("JWT token details:", token);
       return token;
     },
     async session({ session, token }) {
       session.user = session.user || {};
-      session.user.role = token.role as string;
-      session.user.accountId = token.accountId as string;
-      session.user.userId = token.userId as string;
+      session.user.account = token.account as string;
+      session.user.user = token.user as string;
       return session;
     },
   },

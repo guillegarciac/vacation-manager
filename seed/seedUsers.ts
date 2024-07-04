@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
-import User from '../database/models/User';
+import User, { IUser } from '../database/models/User';
 import bcrypt from 'bcrypt';
-require('dotenv').config({ path: './.env.local' });
+import dotenv from 'dotenv';
+
+dotenv.config({ path: './.env.local' });
 
 const usersToSeed = [
   {
@@ -27,16 +29,15 @@ async function seedUsers() {
     await mongoose.connect(process.env.MONGODB_URI as string);
     console.log(`Connected to the database: ${mongoose.connection.name}`);
 
-await User.deleteMany({});
-    console.log('Existing users cleared'); 
+    await User.deleteMany({});
+    console.log('Existing users cleared');
 
     // Hash passwords and add them to the user objects
     for (const user of usersToSeed) {
-      const hashedPassword = await bcrypt.hash('testtest', 10); 
-      user.password = hashedPassword;
+      user.password = await bcrypt.hash(user.password, 10);
     }
 
-    const seededUsers = await User.insertMany(usersToSeed);
+    const seededUsers = await User.insertMany(usersToSeed as IUser[]);
     console.log(`Seeded users: ${seededUsers.length}`);
   } catch (error) {
     console.error('Failed to seed users:', error);
