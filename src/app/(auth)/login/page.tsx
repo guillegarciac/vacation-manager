@@ -27,6 +27,15 @@ export default function LoginPage() {
     }
   }, [status, router]);
 
+  if (status === "loading") {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -45,10 +54,6 @@ export default function LoginPage() {
       setError(response.error);
     }
   };
-
-  if (status === "authenticated") {
-    return null;
-  }
 
   const isFormFilled = email && password;
 
