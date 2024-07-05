@@ -1,4 +1,5 @@
 "use client";
+
 import React, { FormEvent, useState, useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -11,8 +12,6 @@ import {
   TextField,
   CircularProgress,
 } from "@mui/material";
-
-import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -50,6 +49,7 @@ export default function LoginPage() {
   if (status === "authenticated") {
     return null;
   }
+
   const isFormFilled = email && password;
 
   return (
@@ -63,12 +63,6 @@ export default function LoginPage() {
       <Card sx={{ maxWidth: 400, padding: 3 }}>
         <CardContent>
           <Box textAlign="center" mb={2}>
-{/*             <Image
-              src="/thegroundlogo.png"
-              alt="Logo"
-              width={200}
-              height={100}
-            /> */}
             <Typography variant="h4" gutterBottom>
               vacation-manager
             </Typography>
@@ -89,7 +83,6 @@ export default function LoginPage() {
               autoComplete="off"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              data-lpignore="true"
               suppressHydrationWarning={true}
             />
             <TextField
@@ -104,7 +97,6 @@ export default function LoginPage() {
               autoComplete="off"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              data-lpignore="true"
               suppressHydrationWarning={true}
             />
             <Button
@@ -114,7 +106,6 @@ export default function LoginPage() {
               fullWidth
               sx={{
                 mt: 2,
-                ml: 0,
                 padding: "10px 20px",
                 textTransform: "none",
                 transition: "background-color 0.3s",
@@ -134,11 +125,6 @@ export default function LoginPage() {
               {error}
             </Typography>
           )}
-          {/* <Typography variant="body2" sx={{ mt: 2, textAlign: "center" }}>
-            Use the following credentials for demo:<br/>
-            Email: <b>am1@am.am</b><br/>
-            Password: <b>testtest</b>
-          </Typography> */}
         </CardContent>
       </Card>
     </Box>

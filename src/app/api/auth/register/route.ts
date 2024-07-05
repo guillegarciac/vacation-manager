@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+/* import type { NextApiRequest, NextApiResponse } from 'next';
 import { hash } from 'bcrypt';
 import { MongoClient, ObjectId } from 'mongodb';
 
@@ -64,3 +64,4 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
     }
   }
 }
+ */

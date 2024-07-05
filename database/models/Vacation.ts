@@ -7,7 +7,7 @@ export interface IVacation extends Document {
 }
 
 const VacationSchema: Schema = new mongoose.Schema({
-  user: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true }
 }, { timestamps: true });
