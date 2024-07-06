@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Schema, Document, Model, ObjectId } from 'mongoose';
 
 export interface IUser extends Document {
   username: string;
@@ -6,6 +6,15 @@ export interface IUser extends Document {
   password: string;
   roles: string[];
   account: mongoose.Types.ObjectId;
+  suspended: boolean;
+}
+
+export interface IUserForm {
+  username: string;
+  email: string;
+  password: string;
+  roles: string[];
+  account: ObjectId | string;
   suspended: boolean;
 }
 
